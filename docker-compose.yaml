@@ -1,0 +1,41 @@
+services:
+
+  postgresql:
+    container_name: api-postgresql
+    environment:
+      - POSTGRES_DB=api
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_USER=api
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - api-postgresql:/var/lib/postgresql/data
+    networks:
+      - api-network
+
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgresql
+      - redis
+    environment:
+      - ENVIRONMENT=development
+      - POSTGRESQL_URL=jdbc:postgresql://postgresql:5432/api
+      - POSTGRESQL_USERNAME=api
+      - POSTGRESQL_PASSWORD=api
+    networks:
+      - api-network
+
+volumes:
+  api-postgresql:
+    driver: local
+
+networks:
+  api-network:
+    driver: bridge

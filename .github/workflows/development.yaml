@@ -1,0 +1,24 @@
+name: Development
+
+on:
+  push:
+    branches: [ development ]
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+jobs:
+  continuous_integration:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Build image and run tests
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t beesby-api:${{ env.IMAGE_TAG }} .
