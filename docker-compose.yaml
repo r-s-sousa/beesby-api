@@ -23,12 +23,12 @@ services:
       - "8081:8080"
     depends_on:
       - postgresql
-      - redis
     environment:
       - ENVIRONMENT=development
       - POSTGRESQL_URL=jdbc:postgresql://postgresql:5432/api
       - POSTGRESQL_USERNAME=api
       - POSTGRESQL_PASSWORD=api
+      - JWT_SECRET=3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
     networks:
       - api-network
 
